@@ -16,7 +16,7 @@ export function SpecialistSection() {
 
                                 {/* 1. Foto do Especialista */}
                                 <div className="w-full md:w-auto flex justify-center order-1 md:order-1">
-                                    <div className="relative w-64 h-64 md:w-80 md:h-80 group/photo">
+                                    <div className="relative w-56 h-56 md:w-72 md:h-72 group/photo">
                                         {/* Moldura com Iluminação Leve */}
                                         <div className="absolute -inset-2 bg-gradient-to-tr from-[#00ff99]/20 via-transparent to-[#00ff99]/10 rounded-[2.5rem] blur-sm opacity-50 photo-glow" />
 
@@ -67,8 +67,7 @@ export function SpecialistSection() {
                                     <div className="mt-10 pt-10 border-t border-white/5 relative">
                                         <div className="absolute top-0 left-0 md:left-0 right-0 md:right-auto w-24 h-px bg-gradient-to-r from-[#00ff99] to-transparent mx-auto md:mx-0" />
                                         <p className="text-white/50 text-base italic leading-relaxed">
-                                            "Foi justamente observando essas dificuldades no dia a dia que surgiu a ideia de criar um sistema simples, direto e inteligente. <br className="hidden md:block" />
-                                            Assim nasceu a ECONYX, uma forma prática de transformar dados financeiros em decisões mais claras e estratégicas."
+
                                         </p>
                                     </div>
                                 </div>
