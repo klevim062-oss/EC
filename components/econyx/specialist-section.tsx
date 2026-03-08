@@ -19,12 +19,12 @@ export function SpecialistSection() {
                                         {/* Moldura com Iluminação Leve */}
                                         <div className="absolute -inset-1.5 bg-gradient-to-tr from-[#00ff99]/20 via-transparent to-[#00ff99]/10 rounded-[2.5rem] blur-sm opacity-50 photo-glow" />
 
-                                        <div className="relative w-full h-full rounded-[2rem] overflow-hidden border-2 border-white/10 shadow-2xl">
+                                        <div className="relative w-full h-full rounded-[2rem] overflow-hidden border-2 border-white/10 shadow-2xl bg-black/20 flex items-center justify-center">
                                             <Image
                                                 src="/rafael.jpg"
                                                 alt="Rafael Venturi"
                                                 fill
-                                                className="object-cover transition-transform duration-700 group-hover/photo:scale-105"
+                                                className="object-contain transition-transform duration-700 group-hover/photo:scale-105"
                                             />
                                         </div>
                                     </div>
