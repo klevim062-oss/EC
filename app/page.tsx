@@ -13,6 +13,7 @@ import { PlansSection } from "@/components/econyx/plans-section"
 import { CtaSection } from "@/components/econyx/cta-section"
 import { VSLSection } from "@/components/econyx/vsl-section"
 
+// Deployment trigger: 2026-03-08
 export default function Page() {
   const [vslFinished, setVslFinished] = useState(false)
 
