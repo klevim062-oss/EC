@@ -38,11 +38,20 @@ export function VSLSection({ onFinished }: { onFinished: () => void }) {
                 player.on('pause', () => setIsPlaying(false))
                 player.on('ended', () => onFinished())
 
+                // REQUISITO: Finalizar em 01:24 (84 segundos)
+                player.on('timeupdate', (data: { seconds: number }) => {
+                    if (data.seconds >= 84) {
+                        onFinished()
+                    }
+                })
+
                 player.ready().then(() => {
                     setIsReady(true)
+                    // Forçar volume no máximo e tentar dar play com áudio
+                    player.setVolume(1)
                     player.play().catch(() => {
                         setIsPlaying(false)
-                        console.log("Autoplay was prevented. User interaction required.")
+                        console.log("Autoplay with audio blocked. User interaction required.")
                     })
                 })
             }

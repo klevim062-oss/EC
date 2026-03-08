@@ -239,6 +239,30 @@
             playIcon.style.display = 'flex';
         });
 
+        // EVENTO DE TÉRMINO: Onde a mágica acontece sem delay
+        player.on('timeupdate', function (data) {
+            if (data.seconds >= 84) {
+                finalizarPagina();
+            }
+        });
+
+        player.on('ended', finalizarPagina);
+
+        function finalizarPagina() {
+            if (salesPage.style.display === 'block') return; // Evita duplicidade
+
+            // 1. REVELAÇÃO INSTANTÂNEA: Remove o display:none do conteúdo principal
+            salesPage.style.display = 'block';
+
+            // 2. REMOÇÃO DA VSL: Remove o bloco da VSL da tela completamente
+            overlay.style.display = 'none';
+
+            // 3. LIBERAÇÃO DE SCROLL: Permite que o usuário navegue
+            document.body.style.overflow = 'auto';
+
+            console.log('Página liberada instantaneamente aos 1:24.');
+        }
+
         // Alternar Play/Pause ao clicar no vídeo
         controls.addEventListener('click', () => {
             if (isPlaying) {
@@ -250,14 +274,6 @@
                 playIcon.style.display = 'none';
                 isPlaying = true;
             }
-        });
-
-        // Detectar fim do vídeo e liberar site
-        player.on('ended', function () {
-            salesPage.style.display = 'block';
-            overlay.style.display = 'none';
-            document.body.style.overflow = 'auto';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
 </body>
