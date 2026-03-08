@@ -12,6 +12,7 @@ import { SocialProofSection } from "@/components/econyx/social-proof-section"
 import { PlansSection } from "@/components/econyx/plans-section"
 import { CtaSection } from "@/components/econyx/cta-section"
 import { VSLSection } from "@/components/econyx/vsl-section"
+import { SpecialistSection } from "@/components/econyx/specialist-section"
 
 // Deployment trigger: 2026-03-08 12:45
 export default function Page() {
@@ -55,6 +56,7 @@ export default function Page() {
             <TurningPointSection />
             <EconyxScrollSection />
             <SocialProofSection />
+            <SpecialistSection />
             <PlansSection />
             <CtaSection />
           </main>
