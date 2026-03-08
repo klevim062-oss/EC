@@ -14,8 +14,8 @@ export function SpecialistSection() {
 
                             <div className="relative bg-[#0b0f12] rounded-[2rem] overflow-hidden p-8 md:p-12 border border-white/5 flex flex-col md:flex-row items-center gap-10 md:gap-16">
 
-                                <div className="w-full md:w-auto flex justify-center order-1 md:order-1">
-                                    <div className="relative w-48 h-48 md:w-64 md:h-64 group/photo">
+                                <div className="w-full md:w-auto flex-shrink-0 flex justify-center order-1 md:order-1">
+                                    <div className="relative w-44 h-44 md:w-52 md:h-52 group/photo">
                                         {/* Moldura com Iluminação Leve */}
                                         <div className="absolute -inset-1.5 bg-gradient-to-tr from-[#00ff99]/20 via-transparent to-[#00ff99]/10 rounded-[2.5rem] blur-sm opacity-50 photo-glow" />
 
