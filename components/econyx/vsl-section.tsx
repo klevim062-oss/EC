@@ -18,11 +18,18 @@ declare global {
 export function VSLSection({ onFinished }: { onFinished: () => void }) {
     const containerRef = useRef<HTMLDivElement>(null)
     const playerRef = useRef<any>(null)
-    const [isPlaying, setIsPlaying] = useState(true)
+    const finishedRef = useRef(false)
+    const [isPlaying, setIsPlaying] = useState(false)
     const [isReady, setIsReady] = useState(false)
+    const [needsInteraction, setNeedsInteraction] = useState(false)
+
+    const handleFinish = () => {
+        if (finishedRef.current) return
+        finishedRef.current = true
+        onFinished()
+    }
 
     useEffect(() => {
-        // Dynamically load the Vimeo SDK
         const script = document.createElement('script')
         script.src = "https://player.vimeo.com/api/player.js"
         script.async = true
@@ -34,24 +41,31 @@ export function VSLSection({ onFinished }: { onFinished: () => void }) {
                 const player = new window.Vimeo.Player(iframe)
                 playerRef.current = player
 
-                player.on('play', () => setIsPlaying(true))
+                player.on('play', () => {
+                    setIsPlaying(true)
+                    setNeedsInteraction(false)
+                })
                 player.on('pause', () => setIsPlaying(false))
-                player.on('ended', () => onFinished())
+                player.on('ended', () => handleFinish())
 
-                // REQUISITO: Finalizar em 01:24 (84 segundos)
+                // REQUISITO: Finalizar exatamente em 01:24 (84 segundos)
                 player.on('timeupdate', (data: { seconds: number }) => {
+                    console.log("Current time:", data.seconds)
                     if (data.seconds >= 84) {
-                        onFinished()
+                        handleFinish()
                     }
                 })
 
                 player.ready().then(() => {
                     setIsReady(true)
-                    // Forçar volume no máximo e tentar dar play com áudio
+                    // Tentar iniciar com som
                     player.setVolume(1)
-                    player.play().catch(() => {
+                    player.setMuted(false)
+
+                    player.play().catch((error) => {
+                        console.log("Autoplay blocked or muted:", error)
+                        setNeedsInteraction(true)
                         setIsPlaying(false)
-                        console.log("Autoplay with audio blocked. User interaction required.")
                     })
                 })
             }
@@ -64,6 +78,15 @@ export function VSLSection({ onFinished }: { onFinished: () => void }) {
         }
     }, [onFinished])
 
+    const startWithSound = () => {
+        if (!playerRef.current) return
+        playerRef.current.setVolume(1)
+        playerRef.current.setMuted(false)
+        playerRef.current.play()
+        setNeedsInteraction(false)
+        setIsPlaying(true)
+    }
+
     const togglePlay = () => {
         if (!playerRef.current) return
         if (isPlaying) {
@@ -75,11 +98,6 @@ export function VSLSection({ onFinished }: { onFinished: () => void }) {
 
     return (
         <div className="fixed inset-0 z-[9999] bg-black flex items-center justify-center">
-            {/* 
-          Container optimized for portrait video.
-          On mobile: fills the width and height (9:16 ratio usually).
-          On desktop: centered and appropriately sized.
-      */}
             <div
                 className="relative w-full h-full md:h-[90vh] md:max-w-none md:aspect-[9/16] bg-black overflow-hidden flex items-center justify-center"
                 ref={containerRef}
@@ -98,32 +116,42 @@ export function VSLSection({ onFinished }: { onFinished: () => void }) {
                     title="VSL ECONYX"
                 />
 
-                {/* Custom Overlay for Play/Pause */}
+                {/* Overlay Principal para Clique */}
                 <div
                     className="absolute inset-0 z-10 cursor-pointer flex items-center justify-center group"
-                    onClick={togglePlay}
+                    onClick={needsInteraction ? startWithSound : togglePlay}
                 >
-                    {/* Large play button when paused */}
-                    {!isPlaying && isReady && (
-                        <div className="w-20 h-20 rounded-full bg-[#00ff99]/90 flex items-center justify-center shadow-[0_0_30px_rgba(0,255,153,0.5)] transition-transform group-hover:scale-110">
-                            <Play className="w-10 h-10 text-black fill-black ml-1" />
+                    {/* Botão de Iniciar com Som (Call to Action) */}
+                    {needsInteraction && (
+                        <div className="flex flex-col items-center gap-4 animate-in fade-in zoom-in duration-500">
+                            <div className="w-24 h-24 rounded-full bg-[#00ff99] flex items-center justify-center shadow-[0_0_50px_rgba(0,255,153,0.6)]">
+                                <Play className="w-12 h-12 text-black fill-black ml-1" />
+                            </div>
+                            <span className="text-white font-bold text-lg tracking-tight bg-black/60 px-4 py-2 rounded-lg backdrop-blur-sm border border-white/10">
+                                Clique para Ativar o Som
+                            </span>
                         </div>
                     )}
 
-                    {/* Small status indicator in the corner */}
-                    <div className="absolute bottom-6 right-6 flex items-center justify-center p-3 rounded-full bg-black/40 backdrop-blur-md border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
-                        {isPlaying ? (
-                            <Pause className="w-5 h-5 text-white" />
-                        ) : (
-                            <Play className="w-5 h-5 text-white fill-white" />
-                        )}
-                    </div>
+                    {/* Botão de Play convencional quando pausado (mas já teve interação) */}
+                    {!isPlaying && !needsInteraction && isReady && (
+                        <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/20 transition-transform group-hover:scale-110">
+                            <Play className="w-10 h-10 text-white fill-white ml-1" />
+                        </div>
+                    )}
+
+                    {/* Indicador de Status (Pause) */}
+                    {isPlaying && (
+                        <div className="absolute bottom-10 right-10 flex items-center justify-center p-4 rounded-full bg-black/40 backdrop-blur-md border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <Pause className="w-6 h-6 text-white" />
+                        </div>
+                    )}
                 </div>
 
-                {/* Decorative indicator */}
-                <div className="absolute top-6 left-6 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/5 pointer-events-none">
-                    <div className="w-2 h-2 rounded-full bg-[#00ff99] animate-pulse" />
-                    <span className="text-[10px] uppercase tracking-widest font-black text-white/60">Apresentação Oficial</span>
+                {/* Tag de Apresentação */}
+                <div className="absolute top-10 left-10 z-20 flex items-center gap-3 px-4 py-2 rounded-full bg-black/60 backdrop-blur-md border border-white/10 pointer-events-none">
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#00ff99] animate-pulse" />
+                    <span className="text-[11px] uppercase tracking-[0.2em] font-black text-white">Apresentação Oficial</span>
                 </div>
             </div>
         </div>

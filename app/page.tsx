@@ -13,8 +13,11 @@ import { PlansSection } from "@/components/econyx/plans-section"
 import { CtaSection } from "@/components/econyx/cta-section"
 import { VSLSection } from "@/components/econyx/vsl-section"
 
-// Deployment trigger: 2026-03-08
+// Deployment trigger: 2026-03-08 12:45
 export default function Page() {
+  useEffect(() => {
+    console.log("VSL SYSTEM: 1.2.4-DEFINITIVE-READY")
+  }, [])
   const [vslFinished, setVslFinished] = useState(false)
 
   useEffect(() => {
