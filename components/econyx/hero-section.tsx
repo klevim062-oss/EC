@@ -4,7 +4,6 @@ import { ArrowRight, ArrowDown, Check, TrendingUp, BarChart3 } from "lucide-reac
 import { MagneticButton } from "./magnetic-button"
 import { Reveal } from "./reveal"
 import { PhoneMockup } from "./phone-mockup"
-import RealismButton from "@/components/ui/shiny-borders-button"
 
 export function HeroSection() {
   return (
@@ -51,16 +50,6 @@ export function HeroSection() {
                   <TrendingUp className="w-4 h-4 text-[rgba(24,208,122,0.95)]" strokeWidth={2.4} />
                   Clareza na tela
                 </span>
-              </div>
-
-              <div className="mt-8">
-                <RealismButton
-                  text="Quero economizar agora"
-                  onClick={() => {
-                    const el = document.getElementById('planos');
-                    el?.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                />
               </div>
             </div>
 

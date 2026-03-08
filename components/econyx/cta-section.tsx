@@ -3,7 +3,6 @@
 import { ArrowRight, ArrowUp } from "lucide-react"
 import { MagneticButton } from "./magnetic-button"
 import { Reveal } from "./reveal"
-import RealismButton from "@/components/ui/shiny-borders-button"
 
 export function CtaSection() {
   return (
@@ -25,13 +24,10 @@ export function CtaSection() {
           </p>
 
           <div className="flex flex-wrap gap-3 mt-3.5">
-            <RealismButton
-              text="Quero economizar agora"
-              onClick={() => {
-                const el = document.getElementById('planos');
-                el?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            />
+            <MagneticButton href="#planos" variant="primary" pulse>
+              <ArrowRight className="w-[18px] h-[18px]" strokeWidth={2.4} />
+              Escolher meu plano
+            </MagneticButton>
             <MagneticButton href="#topo" variant="ghost">
               <ArrowUp className="w-[18px] h-[18px]" strokeWidth={2.4} />
               Voltar ao topo
