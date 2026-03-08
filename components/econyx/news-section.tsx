@@ -5,6 +5,7 @@ import { ArrowRight } from "lucide-react"
 import { MagneticButton } from "./magnetic-button"
 import { Reveal } from "./reveal"
 import { TiltCard } from "./tilt-card"
+import RealismButton from "@/components/ui/shiny-borders-button"
 
 const newsItems = [
   {
@@ -26,6 +27,15 @@ export function NewsSection() {
     <section id="noticias" className="py-[clamp(44px,5vw,84px)] relative scroll-mt-[86px]">
       <div className="max-w-[1120px] mx-auto px-[18px]">
         <Reveal>
+          <div className="flex justify-center mb-10">
+            <RealismButton
+              text="Quero economizar agora"
+              onClick={() => {
+                const el = document.getElementById('planos');
+                el?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            />
+          </div>
 
           <h2 className="text-[clamp(26px,3.1vw,44px)] leading-[1.1] font-black tracking-tight mt-3 mb-2.5 text-[var(--ink)] text-balance">
             {'Foi aí que percebi que vários brasileiros estão se afundando cada vez mais.'}

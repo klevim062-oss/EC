@@ -3,12 +3,23 @@
 import { AlignJustify, BarChart3 } from "lucide-react"
 import { Reveal } from "./reveal"
 import { TiltCard } from "./tilt-card"
+import RealismButton from "@/components/ui/shiny-borders-button"
 
 export function TurningPointSection() {
   return (
     <section id="virada" className="py-[clamp(44px,5vw,84px)] relative scroll-mt-[86px] mb-24 md:mb-40">
       <div className="max-w-[1120px] mx-auto px-[18px]">
         <Reveal>
+          <div className="flex justify-center mb-10">
+            <RealismButton
+              text="Quero economizar agora"
+              onClick={() => {
+                const el = document.getElementById('planos');
+                el?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            />
+          </div>
+
           <div className="inline-flex items-center gap-2 px-2.5 py-2 rounded-full bg-[rgba(24,208,122,0.08)] border border-[rgba(24,208,122,0.18)] text-[rgba(234,240,255,0.92)] backdrop-blur-[10px] font-black text-xs tracking-[0.10em] uppercase">
             <span className="w-2 h-2 rounded-full bg-[var(--green-lite)] shadow-[0_0_0_6px_rgba(24,208,122,0.12)]" />
             A VIRADA

@@ -1,12 +1,22 @@
 import React from "react"
 import Image from "next/image"
 import { Reveal } from "./reveal"
+import RealismButton from "@/components/ui/shiny-borders-button"
 
 export function SpecialistSection() {
     return (
         <section className="py-24 relative overflow-hidden bg-black">
             <div className="container mx-auto px-4 relative z-10">
                 <Reveal>
+                    <div className="flex justify-center mb-12">
+                        <RealismButton
+                            text="Quero economizar agora"
+                            onClick={() => {
+                                const el = document.getElementById('planos');
+                                el?.scrollIntoView({ behavior: 'smooth' });
+                            }}
+                        />
+                    </div>
                     <div className="max-w-5xl mx-auto">
                         <div className="relative group p-px rounded-[2rem] bg-gradient-to-b from-white/10 to-transparent hover:from-[#00ff99]/20 transition-all duration-700">
                             {/* Glow Verde Leve */}
