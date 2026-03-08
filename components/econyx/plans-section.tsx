@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils"
 import { MagneticButton } from "./magnetic-button"
 import { Reveal } from "./reveal"
 import { TiltCard } from "./tilt-card"
+import RealismButton from "@/components/ui/shiny-borders-button"
 
 function CheckItem({ children, variant = "green" }: { children: React.ReactNode, variant?: "green" | "gold" | "orange" }) {
   const isGold = variant === "gold";
@@ -117,10 +118,16 @@ export function PlansSection() {
                   {"Se voc\u00ea quer parar de \u201ctomar susto\u201d com cart\u00e3o e conta\u2026 \u00e9 esse aqui."}
                 </div>
 
-                <MagneticButton href="#cta-final" variant="gold" pulse>
-                  <ArrowRight className="w-[18px] h-[18px]" strokeWidth={2.4} />
-                  Quero o Master agora
-                </MagneticButton>
+                <div className="mt-auto flex justify-center">
+                  <RealismButton
+                    text="Quero economizar agora"
+                    onClick={() => {
+                      const el = document.getElementById('cta-final');
+                      el?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className="w-full"
+                  />
+                </div>
               </TiltCard>
             </Reveal>
           </div>
