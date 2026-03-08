@@ -14,11 +14,10 @@ export function SpecialistSection() {
 
                             <div className="relative bg-[#0b0f12] rounded-[2rem] overflow-hidden p-8 md:p-12 border border-white/5 flex flex-col md:flex-row items-center gap-10 md:gap-16">
 
-                                {/* 1. Foto do Especialista */}
                                 <div className="w-full md:w-auto flex justify-center order-1 md:order-1">
-                                    <div className="relative w-56 h-56 md:w-72 md:h-72 group/photo">
+                                    <div className="relative w-48 h-48 md:w-64 md:h-64 group/photo">
                                         {/* Moldura com Iluminação Leve */}
-                                        <div className="absolute -inset-2 bg-gradient-to-tr from-[#00ff99]/20 via-transparent to-[#00ff99]/10 rounded-[2.5rem] blur-sm opacity-50 photo-glow" />
+                                        <div className="absolute -inset-1.5 bg-gradient-to-tr from-[#00ff99]/20 via-transparent to-[#00ff99]/10 rounded-[2.5rem] blur-sm opacity-50 photo-glow" />
 
                                         <div className="relative w-full h-full rounded-[2rem] overflow-hidden border-2 border-white/10 shadow-2xl">
                                             <Image
