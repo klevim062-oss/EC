@@ -12,16 +12,16 @@ declare global {
 /**
  * VSLSection Component
  * 
- * Optimized for vertical video (portrait) to fill the screen on mobile.
- * Features custom play/pause controls while hiding generic Vimeo UI.
+ * Minimalist version: Only video + central play/pause button.
+ * Preserves 01:24 reveal logic.
  */
 export function VSLSection({ onFinished }: { onFinished: () => void }) {
     const containerRef = useRef<HTMLDivElement>(null)
     const playerRef = useRef<any>(null)
     const finishedRef = useRef(false)
     const [isPlaying, setIsPlaying] = useState(false)
+    const [isMuted, setIsMuted] = useState(true)
     const [isReady, setIsReady] = useState(false)
-    const [needsInteraction, setNeedsInteraction] = useState(false)
 
     const handleFinish = () => {
         if (finishedRef.current) return
@@ -41,16 +41,12 @@ export function VSLSection({ onFinished }: { onFinished: () => void }) {
                 const player = new window.Vimeo.Player(iframe)
                 playerRef.current = player
 
-                player.on('play', () => {
-                    setIsPlaying(true)
-                    setNeedsInteraction(false)
-                })
+                player.on('play', () => setIsPlaying(true))
                 player.on('pause', () => setIsPlaying(false))
                 player.on('ended', () => handleFinish())
 
-                // REQUISITO: Finalizar exatamente em 01:24 (84 segundos)
+                // Funnel Logic: Reveal at 01:24 (84 seconds)
                 player.on('timeupdate', (data: { seconds: number }) => {
-                    console.log("Current time:", data.seconds)
                     if (data.seconds >= 84) {
                         handleFinish()
                     }
@@ -58,13 +54,10 @@ export function VSLSection({ onFinished }: { onFinished: () => void }) {
 
                 player.ready().then(() => {
                     setIsReady(true)
-                    // Tentar iniciar com som
-                    player.setVolume(1)
-                    player.setMuted(false)
-
-                    player.play().catch((error) => {
-                        console.log("Autoplay blocked or muted:", error)
-                        setNeedsInteraction(true)
+                    // Initial attempt to play (usually muted due to browser policy)
+                    player.play().then(() => {
+                        setIsPlaying(true)
+                    }).catch(() => {
                         setIsPlaying(false)
                     })
                 })
@@ -78,21 +71,23 @@ export function VSLSection({ onFinished }: { onFinished: () => void }) {
         }
     }, [onFinished])
 
-    const startWithSound = () => {
+    const handleCentralInteraction = () => {
         if (!playerRef.current) return
-        playerRef.current.setVolume(1)
-        playerRef.current.setMuted(false)
-        playerRef.current.play()
-        setNeedsInteraction(false)
-        setIsPlaying(true)
-    }
 
-    const togglePlay = () => {
-        if (!playerRef.current) return
-        if (isPlaying) {
-            playerRef.current.pause()
-        } else {
+        if (isMuted) {
+            // First click: Unmute and ensure it's playing
+            playerRef.current.setVolume(1)
+            playerRef.current.setMuted(false)
             playerRef.current.play()
+            setIsMuted(false)
+            setIsPlaying(true)
+        } else {
+            // Subsequent clicks: Toggle Play/Pause
+            if (isPlaying) {
+                playerRef.current.pause()
+            } else {
+                playerRef.current.play()
+            }
         }
     }
 
@@ -116,42 +111,22 @@ export function VSLSection({ onFinished }: { onFinished: () => void }) {
                     title="VSL ECONYX"
                 />
 
-                {/* Overlay Principal para Clique */}
+                {/* Central Play/Pause Button - Minimalist Style */}
                 <div
                     className="absolute inset-0 z-10 cursor-pointer flex items-center justify-center group"
-                    onClick={needsInteraction ? startWithSound : togglePlay}
+                    onClick={handleCentralInteraction}
                 >
-                    {/* Botão de Iniciar com Som (Call to Action) */}
-                    {needsInteraction && (
-                        <div className="flex flex-col items-center gap-4 animate-in fade-in zoom-in duration-500">
-                            <div className="w-24 h-24 rounded-full bg-[#00ff99] flex items-center justify-center shadow-[0_0_50px_rgba(0,255,153,0.6)]">
-                                <Play className="w-12 h-12 text-black fill-black ml-1" />
-                            </div>
-                            <span className="text-white font-bold text-lg tracking-tight bg-black/60 px-4 py-2 rounded-lg backdrop-blur-sm border border-white/10">
-                                Clique para Ativar o Som
-                            </span>
+                    {(!isPlaying || isMuted) && isReady && (
+                        <div className="w-24 h-24 rounded-full bg-[#00ff99] flex items-center justify-center shadow-[0_0_50px_rgba(0,255,153,0.6)] transition-transform duration-300 group-hover:scale-110">
+                            <Play className="w-12 h-12 text-black fill-black ml-1" />
                         </div>
                     )}
 
-                    {/* Botão de Play convencional quando pausado (mas já teve interação) */}
-                    {!isPlaying && !needsInteraction && isReady && (
-                        <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center border border-white/20 transition-transform group-hover:scale-110">
-                            <Play className="w-10 h-10 text-white fill-white ml-1" />
+                    {isPlaying && !isMuted && (
+                        <div className="w-24 h-24 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                            <Pause className="w-10 h-10 text-white fill-white" />
                         </div>
                     )}
-
-                    {/* Indicador de Status (Pause) */}
-                    {isPlaying && (
-                        <div className="absolute bottom-10 right-10 flex items-center justify-center p-4 rounded-full bg-black/40 backdrop-blur-md border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <Pause className="w-6 h-6 text-white" />
-                        </div>
-                    )}
-                </div>
-
-                {/* Tag de Apresentação */}
-                <div className="absolute top-10 left-10 z-20 flex items-center gap-3 px-4 py-2 rounded-full bg-black/60 backdrop-blur-md border border-white/10 pointer-events-none">
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#00ff99] animate-pulse" />
-                    <span className="text-[11px] uppercase tracking-[0.2em] font-black text-white">Apresentação Oficial</span>
                 </div>
             </div>
         </div>
