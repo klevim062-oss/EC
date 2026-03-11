@@ -7,7 +7,7 @@ import RealismButton from "@/components/ui/shiny-borders-button"
 
 export function TurningPointSection() {
   return (
-    <section id="virada" className="py-[clamp(44px,5vw,84px)] relative scroll-mt-[86px] mb-24 md:mb-40">
+    <section id="virada" className="py-[clamp(44px,5vw,84px)] relative scroll-mt-[86px] mb-12 md:mb-16">
       <div className="max-w-[1120px] mx-auto px-[18px]">
         <Reveal>
           <div className="flex justify-center mb-10">

@@ -1,53 +1,63 @@
 "use client";
 
-import React from "react";
-import { ContainerScroll } from "@/components/ui/container-scroll-animation";
-import { Play } from "lucide-react";
+import React, { useEffect } from "react";
+import { Reveal } from "./reveal";
 
 export function EconyxScrollSection() {
+    useEffect(() => {
+        const script = document.createElement("script");
+        script.src = "https://player.vimeo.com/api/player.js";
+        script.async = true;
+        document.body.appendChild(script);
+        return () => {
+            if (document.body.contains(script)) {
+                document.body.removeChild(script);
+            }
+        };
+    }, []);
+
     return (
-        <section className="relative w-full pt-16 md:pt-32 pb-20">
-            {/* ContainerScroll já cria o efeito 3D no scroll */}
-            <ContainerScroll
-                titleComponent={
-                    <div className="mx-auto max-w-[920px] text-left">
-                        <section className="econyx-highlight p-7 md:p-10">
-                            <h3 className="m-0 mb-3 text-[clamp(20px,3vw,30px)] font-black tracking-tight text-[#00ff99] drop-shadow-[0_0_14px_rgba(0,255,170,0.35)]">
+        <section className="relative w-full py-6">
+            <div className="mx-auto max-w-[800px] px-[18px]">
+                <div className="text-left md:text-center">
+                    <h3 className="m-0 mb-4 text-[clamp(20px,3vw,28px)] font-black tracking-tight text-[#00ff99] drop-shadow-[0_0_14px_rgba(0,255,170,0.35)]">
+                        Foi aí que a ECONYX entrou.
+                    </h3>
 
+                    <div className="space-y-4 text-base md:text-lg leading-relaxed text-[rgba(230,230,230,0.92)] font-medium">
+                        <p>A plataforma que organizou minha vida financeira em um só lugar direto no meu celular, onde eu estiver.</p>
 
-                                Foi aí que a ECONYX entrou.
-                            </h3>
+                        <p>Ela controla meu mês, meus cartões e ainda encontra descontos em supermercado, farmácia e onde mais eu estiver gastando.</p>
 
-                            <div className="space-y-3 text-base leading-relaxed text-[rgba(230,230,230,0.92)]">
-                                <p>A plataforma que organizou minha vida financeira em um só lugar direto no meu celular, onde eu estiver.</p>
+                        <p>Você deixa de decidir no escuro. E passa a enxergar impacto, consequência e oportunidade antes de agir.</p>
 
-                                <p>Ela controla meu mês, meus cartões e ainda encontra descontos em supermercado, farmácia e onde mais eu estiver gastando.</p>
+                        <strong className="inline-block mt-2 font-black text-[#00ff99] drop-shadow-[0_0_12px_rgba(0,255,170,0.35)]">
+                            É sobre economizar antes de pagar.
+                        </strong>
+                    </div>
 
-                                <p>Você deixa de decidir no escuro. E passa a enxergar impacto, consequência e oportunidade antes de agir.</p>
+                    {/* Vídeo do Vimeo Integrado */}
+                    <div className="mt-12 flex justify-center">
+                        <div className="w-full max-w-[340px] md:max-w-[400px] relative">
+                            {/* Efeito Glow Verde Integrado */}
+                            <div className="absolute -inset-1.5 bg-[#00ff99]/15 blur-2xl rounded-[2.5rem] pointer-events-none transition-opacity duration-700" />
 
-                                <strong className="inline-block mt-1.5 font-black text-[#00ff99] drop-shadow-[0_0_12px_rgba(0,255,170,0.35)]">
-                                    É sobre economizar antes de pagar.
-                                </strong>
+                            <div className="relative overflow-hidden rounded-[2.2rem] border-2 border-white/10 shadow-[0_0_30px_rgba(0,255,153,0.15)] bg-black transition-transform duration-500 hover:scale-[1.01]">
+                                <div style={{ padding: '175.56% 0 0 0', position: 'relative' }}>
+                                    <iframe
+                                        src="https://player.vimeo.com/video/1172368948?badge=0&autopause=0&player_id=0&app_id=58479"
+                                        frameBorder="0"
+                                        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                                        title="econyx"
+                                        referrerPolicy="strict-origin-when-cross-origin"
+                                    />
+                                </div>
                             </div>
-                        </section>
-                    </div>
-                }
-            >
-                {/* Card do efeito: Ajustado para preenchimento total edge-to-edge */}
-                <div className="relative h-full w-full overflow-hidden bg-[#050505]">
-                    {/* Background visual replaced with a clean, themed placeholder since duplicate videos are prohibited */}
-                    <div className="absolute inset-0 z-0 bg-gradient-to-br from-[#004d33]/20 to-black flex items-center justify-center">
-                        <div className="w-[120px] h-[120px] rounded-full bg-[#00ff99]/5 blur-3xl animate-pulse" />
-                    </div>
-
-                    {/* Subtle Overlay to match UI */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none z-[1]" />
-
-                    <div className="absolute bottom-5 left-5 z-[2] rounded-full border border-[#00ff99]/20 bg-black/60 px-4 py-1.5 text-[11px] font-bold tracking-widest text-[#00ff99] backdrop-blur-md shadow-[0_0_15px_rgba(0,255,153,0.15)] uppercase">
-
+                        </div>
                     </div>
                 </div>
-            </ContainerScroll>
+            </div>
         </section>
     );
 }

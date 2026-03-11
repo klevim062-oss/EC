@@ -37,7 +37,7 @@ export function SocialProofSection() {
     const displayTestimonials = [...testimonials, ...testimonials, ...testimonials, ...testimonials]
 
     return (
-        <section className="py-[clamp(60px,8vw,100px)] relative overflow-hidden">
+        <section className="pt-8 pb-20 relative overflow-hidden">
             {/* Background Sutil */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/[0.03] blur-[150px] pointer-events-none rounded-full" />
 
