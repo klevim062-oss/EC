@@ -12,6 +12,7 @@ export function TurningPointSection() {
         <Reveal>
           <div className="flex justify-center mb-10">
             <RealismButton
+              variant="cta"
               text="Quero economizar agora"
               onClick={() => {
                 const el = document.getElementById('planos');

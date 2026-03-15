@@ -30,15 +30,14 @@ export function EconyxScrollSection() {
 
                 player.on('play', () => setIsPlaying(true));
                 player.on('pause', () => setIsPlaying(false));
+                player.on('ended', () => {
+                    // optional: handle video end if needed
+                });
 
                 player.ready().then(() => {
                     setIsReady(true);
-                    // Single attempt to play muted (browser policy compliant)
-                    player.play().then(() => {
-                        setIsPlaying(true);
-                    }).catch(() => {
-                        setIsPlaying(false);
-                    });
+                    // Do NOT autoplay. Start paused and muted.
+                    player.setMuted(true);
                 });
             }
         };
@@ -52,14 +51,15 @@ export function EconyxScrollSection() {
 
     const handleInteraction = () => {
         if (!playerRef.current) return;
-
         if (isMuted) {
-            playerRef.current.setVolume(1);
+            // First click: unmute and play
             playerRef.current.setMuted(false);
+            playerRef.current.setVolume(1);
             playerRef.current.play();
             setIsMuted(false);
             setIsPlaying(true);
         } else {
+            // Toggle play/pause
             if (isPlaying) {
                 playerRef.current.pause();
             } else {
@@ -97,7 +97,7 @@ export function EconyxScrollSection() {
                             <div className="relative overflow-hidden rounded-[2.2rem] border-2 border-white/10 shadow-[0_0_30px_rgba(0,255,153,0.15)] bg-black transition-transform duration-500 hover:scale-[1.01]">
                                 <div style={{ padding: '175.56% 0 0 0', position: 'relative' }}>
                                     <iframe
-                                        src="https://player.vimeo.com/video/1172368948?badge=0&autopause=0&player_id=0&app_id=58479&autoplay=1&controls=0&background=0"
+                                        src="https://player.vimeo.com/video/1172368948?badge=0&autopause=0&player_id=0&app_id=58479&muted=1&controls=0&background=0"
                                         frameBorder="0"
                                         allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
                                         style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
