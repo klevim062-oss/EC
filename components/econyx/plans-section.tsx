@@ -124,7 +124,11 @@ export function PlansSection() {
                   {"Se voc\u00ea quer parar de \u201ctomar susto\u201d com cart\u00e3o e conta\u2026 \u00e9 esse aqui."}
                 </div>
 
-                <MagneticButton href="https://zuckpay.com.br/checkout/econyx" variant="gold" pulse>
+                <MagneticButton
+                  href="https://zuckpay.com.br/checkout/econyx"
+                  variant="gold"
+                  pulse
+                >
                   <ArrowRight className="w-[18px] h-[18px]" strokeWidth={2.4} />
                   Quero o Master agora
                 </MagneticButton>
