@@ -462,36 +462,53 @@ html {
   }
 }
 
-/* ===== Master Card Animated Border ===== */
+/* ===== Master Card Animated Border (LED Style) ===== */
 .master-card-animated {
   position: relative;
   isolation: isolate;
 }
 
-.master-card-animated::before {
+.master-card-animated::after {
   content: "";
   position: absolute;
-  inset: 0px;
+  inset: -1.5px;
+  padding: 1.8px;
   border-radius: inherit;
   z-index: -1;
-  padding: 2.5px;
   background: conic-gradient(from 0deg,
       transparent 0%,
-      rgba(255, 145, 0, 0) 15%,
-      rgba(255, 145, 0, 1) 33%,
-      rgba(255, 200, 80, 0.8) 43%,
-      rgba(255, 145, 0, 0) 60%,
+      transparent 20%,
+      #FFD700 35%,
+      #FFF8DC 45%,
+      #DAA520 50%,
+      transparent 70%,
       transparent 100%);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  filter: blur(0.4px);
-  opacity: 1;
-  animation: orangeBorderSpin 3.5s linear infinite;
+  animation: borderSpinLED 4s linear infinite;
+  filter: blur(0.5px);
+  pointer-events: none;
 }
 
-@keyframes orangeBorderSpin {
+/* Subtle glow layer */
+.master-card-animated::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.15), transparent 70%);
+  z-index: -2;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+@keyframes borderSpinLED {
+  from {
+    transform: rotate(0deg);
+  }
+
   to {
     transform: rotate(360deg);
   }
