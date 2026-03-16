@@ -462,61 +462,58 @@ html {
   }
 }
 
-/* ===== Master Card Animated Border (Robust LED Sandwich) ===== */
+/* ===== Master Card Animated Border (Definitive Masking) ===== */
 .master-card-animated {
   position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  /* Clips the rotating gradient square to the card shape */
-  border: none !important;
-  background: transparent !important;
-  /* Managed by ::after for layering */
-  box-shadow: 0 0 25px rgba(212, 175, 55, 0.1), 0 30px 70px rgba(0, 0, 0, 0.65);
+  /* The card's own background and styling */
+  background: linear-gradient(180deg, #0e1418, #0b0f12);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  box-shadow: 0 0 45px rgba(212, 175, 55, 0.22), 0 30px 70px rgba(0, 0, 0, 0.65);
+  transition: transform 0.3s ease;
+  z-index: 1;
 }
 
-/* The LED Strip (Rotating Gradient Layer) */
+/* The Animated LED Strip - MATH MASKED */
 .master-card-animated::before {
   content: "";
   position: absolute;
-  /* Huge square to ensure coverage during rotation at all angles */
-  top: -150%;
-  left: -150%;
-  width: 400%;
-  height: 400%;
-  background: conic-gradient(from 180deg at 50% 50%,
+  /* Occupy a slightly larger area than the card */
+  inset: -1.5px;
+  /* Thickness of the LED strip */
+  padding: 2.2px;
+  border-radius: inherit;
+
+  background: conic-gradient(from 0deg,
       transparent 0%,
-      transparent 40%,
-      #FFD700 45%,
-      #FFF8DC 50%,
-      #DAA520 55%,
-      transparent 60%,
+      transparent 20%,
+      #FFD700 35%,
+      #FFF8DC 45%,
+      #DAA520 50%,
+      transparent 70%,
       transparent 100%);
-  animation: rotateLEDSandwich 4s linear infinite;
-  z-index: -2;
+
+  /* CRITICAL: This mathematically deletes the center of this pseudo-element.
+     It keeps ONLY the padding area visible. */
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  animation: borderSpinLED 4s linear infinite;
   pointer-events: none;
+  z-index: 2;
+  /* Put it ABOVE card background but BELOW content */
 }
 
-/* The Opaque Shield (Cover Layer) 
-   Blocks the light from entering the card interior */
-.master-card-animated::after {
-  content: "";
-  position: absolute;
-  /* Defined gap for the border; 1.5px to 2px looks premium */
-  inset: 1.8px;
-  background: linear-gradient(180deg, #0e1418, #0b0f12);
-  border-radius: calc(28px - 1.8px);
-  /* Adjust based on container radius */
-  z-index: -1;
-  pointer-events: none;
-}
-
-/* Ensure all content (text, icons, buttons) stays above the animation */
+/* Ensure all content is elevated and isolated from the border layer */
 .master-card-animated>* {
   position: relative;
   z-index: 10;
+  /* Physically lift content in 3D space to prevent "clipping" from background transforms */
+  transform: translateZ(10px);
 }
 
-@keyframes rotateLEDSandwich {
+@keyframes borderSpinLED {
   from {
     transform: rotate(0deg);
   }
