@@ -462,49 +462,61 @@ html {
   }
 }
 
-/* ===== Master Card Animated Border (LED Style) ===== */
+/* ===== Master Card Animated Border (Robust LED Sandwich) ===== */
 .master-card-animated {
   position: relative;
   isolation: isolate;
+  overflow: hidden;
+  /* Clips the rotating gradient square to the card shape */
+  border: none !important;
+  background: transparent !important;
+  /* Managed by ::after for layering */
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.1), 0 30px 70px rgba(0, 0, 0, 0.65);
 }
 
-.master-card-animated::after {
-  content: "";
-  position: absolute;
-  inset: -1.5px;
-  padding: 1.8px;
-  border-radius: inherit;
-  z-index: -1;
-  background: conic-gradient(from 0deg,
-      transparent 0%,
-      transparent 20%,
-      #FFD700 35%,
-      #FFF8DC 45%,
-      #DAA520 50%,
-      transparent 70%,
-      transparent 100%);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: borderSpinLED 4s linear infinite;
-  filter: blur(0.5px);
-  pointer-events: none;
-}
-
-/* Subtle glow layer */
+/* The LED Strip (Rotating Gradient Layer) */
 .master-card-animated::before {
   content: "";
   position: absolute;
-  inset: -4px;
-  border-radius: inherit;
-  background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.15), transparent 70%);
+  /* Huge square to ensure coverage during rotation at all angles */
+  top: -150%;
+  left: -150%;
+  width: 400%;
+  height: 400%;
+  background: conic-gradient(from 180deg at 50% 50%,
+      transparent 0%,
+      transparent 40%,
+      #FFD700 45%,
+      #FFF8DC 50%,
+      #DAA520 55%,
+      transparent 60%,
+      transparent 100%);
+  animation: rotateLEDSandwich 4s linear infinite;
   z-index: -2;
-  opacity: 0.6;
   pointer-events: none;
 }
 
-@keyframes borderSpinLED {
+/* The Opaque Shield (Cover Layer) 
+   Blocks the light from entering the card interior */
+.master-card-animated::after {
+  content: "";
+  position: absolute;
+  /* Defined gap for the border; 1.5px to 2px looks premium */
+  inset: 1.8px;
+  background: linear-gradient(180deg, #0e1418, #0b0f12);
+  border-radius: calc(28px - 1.8px);
+  /* Adjust based on container radius */
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Ensure all content (text, icons, buttons) stays above the animation */
+.master-card-animated>* {
+  position: relative;
+  z-index: 10;
+}
+
+@keyframes rotateLEDSandwich {
   from {
     transform: rotate(0deg);
   }
