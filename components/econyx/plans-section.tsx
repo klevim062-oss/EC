@@ -1,10 +1,12 @@
 "use client"
 
+import { useRef, useState } from "react"
 import { ArrowRight, ShoppingCart, Check } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { MagneticButton } from "./magnetic-button"
 import { Reveal } from "./reveal"
 import { TiltCard } from "./tilt-card"
+import { UpsellModal } from "./upsell-modal"
 
 function CheckItem({ children, variant = "green" }: { children: React.ReactNode, variant?: "green" | "gold" | "orange" }) {
   const isGold = variant === "gold";
@@ -27,6 +29,8 @@ function CheckItem({ children, variant = "green" }: { children: React.ReactNode,
 }
 
 export function PlansSection() {
+  const [isUpsellOpen, setIsUpsellOpen] = useState(false)
+
   return (
     <section id="planos" className="py-[clamp(44px,5vw,84px)] relative scroll-mt-[86px]">
       <div className="max-w-[1120px] mx-auto px-[18px]">
@@ -71,7 +75,10 @@ export function PlansSection() {
                 </ul>
 
                 <div className="mt-auto">
-                  <MagneticButton href="#cta-final" variant="ghost">
+                  <MagneticButton
+                    variant="ghost"
+                    onClick={() => setIsUpsellOpen(true)}
+                  >
                     <ShoppingCart className="w-[18px] h-[18px]" strokeWidth={2.4} />
                     {"Quero o B\u00e1sico"}
                   </MagneticButton>
@@ -117,7 +124,7 @@ export function PlansSection() {
                   {"Se voc\u00ea quer parar de \u201ctomar susto\u201d com cart\u00e3o e conta\u2026 \u00e9 esse aqui."}
                 </div>
 
-                <MagneticButton href="#cta-final" variant="gold" pulse>
+                <MagneticButton href="https://zuckpay.com.br/checkout/econyx" variant="gold" pulse>
                   <ArrowRight className="w-[18px] h-[18px]" strokeWidth={2.4} />
                   Quero o Master agora
                 </MagneticButton>
@@ -128,6 +135,11 @@ export function PlansSection() {
           <div className="eco-divider" />
         </Reveal>
       </div>
+
+      <UpsellModal
+        isOpen={isUpsellOpen}
+        onClose={() => setIsUpsellOpen(false)}
+      />
     </section>
   )
 }
